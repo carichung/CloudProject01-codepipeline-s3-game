@@ -1,0 +1,104 @@
+1) "Fork" the project in github
+
+2) in AWS, create S3 bucket 
+      bucket name
+      uncheck "block all public access" so everyone can access the game
+      create bucket
+
+3) click the bucket name --> goto "Properties Tab"
+      scroll to the bottom --> find the "Static website hosting"
+      click "edit" --> "enable"
+      index document --> input "index.html"
+      save changes
+
+4) click the bucket name --> goto "Permission Tab"
+      add a bucket policy, otherwise people are not going to see our game
+      copy and paste below in the box
+      save changes
+------------------------------------------
+      {
+    "Version": "2012-10-17",
+    "Statement": [
+    	{
+        	"Sid": "PublicReadGetObject",
+        	"Effect": "Allow",                         ---> = allow
+        	"Principal": "*",                          ---> = everybody = *
+        	"Action": [
+            	"s3:GetObject"                         ---> = to read 
+        	],
+        	"Resource": [
+                "arn:aws:s3:::Bucket-Name/*"         ---> = all file in our bucket, change the bucket name to your bucket name, eg."cloudproject01-codepipeline-s2-game" 
+        	]
+    	}
+    ]
+}
+
+------------------------------------------
+
+5) in AWS, goto CodePipeline
+        create pipeline
+        click "build custom pipeline"
+        assign name (no symbol, this is the place always get you error at the end)
+        Queued
+        New service role 
+        Next
+
+        source provider --> GitHub App
+        Click "Connect to GitHub" button 
+              assign name for the connection
+              click "connect to github"
+
+              click "install a new app" button (to make the connection)
+              it will goto your Github account
+                  scroll down to bottom, find the "Repository access"
+                  click "Only select repositories" --> choose the repository you want to connect
+                  in the "Connect to GitHub" page --> click "Connect"
+                            
+6) go back to AWS CodePipeline
+        the "Connection" box should be updated with the connection you just create, select that
+        choose the correct "Repository name"
+        in "Trigger", select "No filter"
+        Next
+
+        choose "skip the build stage"
+
+        in "add deploy stage"
+              choose "deploy provider" to "S3"
+              choose the correct bucket
+              click the box for "extract file before deploy"
+              next
+
+                  review everything and cleck "create pipeline"
+                  should be show "success"
+
+  7) Test the page
+          goback to S3, in "properties tab", scroll to bottom and open the URL for the game
+          (this URL can be share with others)
+
+          go back to GitHub, make a change to the html file
+          click "commit change"
+          go to AWS Codepipeline, you will find Codepipeline detected a change in github and redeploy for us automatically
+
+
+  Finish
+          
+
+          
+          
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              

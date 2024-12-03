@@ -1,3 +1,13 @@
+AWS Project: Build a Game with a Continuous Deployment Pipeline from GitHub to S3 | AWS Tutorial
+https://www.youtube.com/watch?v=biYVW1TMYAU
+
+
+create S3 ----->  create CodePipeline -----> link CodePipeline to GitHub & S3 -----> Test it
+
+
+-----------------------------------------
+
+
 1) "Fork" the project in github
 
 2) in AWS, create S3 bucket 
